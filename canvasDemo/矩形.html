@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas width="500" height="500" style="background-color: #000;"></canvas>
+    <script>
+        let canvas = document.querySelector('canvas')
+        //获取2d渲染的上下文
+        let ctx = canvas.getContext('2d')
+
+        // 1.fillRect(x, y, w, h)填充矩形(没有路径)
+        // ctx.fillStyle = "red"
+        // ctx.fillRect(20,20,150,100)
+
+        //2.strokeRect(x, y, w, h) 描边矩形(没有路径)
+        // ctx.strokeStyle = "red"
+        // ctx.strokeRect(20,20,150,100)
+
+        // 3.rect(x, y, w, h)举行路径(可填充、描边)
+        ctx.rect(20,20,150,100);
+        ctx.fillStyle = "red"
+        ctx.strokeStyle = "#fff"
+        //选择绘制描边
+        ctx.stroke();
+        //还是填充
+        ctx.fill();
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas width="500" height="500" style="background-color: #000;"></canvas>
+    <script>
+        let canvas = document.querySelector('canvas')
+        //获取2d渲染的上下文
+        let ctx = canvas.getContext('2d')
+
+        //开始路径
+        ctx.beginPath()
+        //确定开始的点
+        //线条连接点样式
+        ctx.lineJoin = "round" //圆
+        // ctx.lineJoin = "miter" // 尖角
+        // ctx.lineJoin = "bevel" // 斜角
+        //线帽样式
+        // ctx.lineCap = "round" // 向线条的每个末端添加圆形线帽。
+        // ctx.lineCap = "butt" // 向线条的每个末端添加平直的边缘。
+        ctx.lineCap = "square" // 向线条的每个末端添加正方形线帽。
+        ctx.moveTo(25,25)
+        //继续下个点
+        ctx.lineTo(425,25)
+        // ...
+        ctx.lineTo(425,425)
+        
+        //闭合路径,如线段没有进行连接，则closePath自动把首尾点相连
+        ctx.closePath() 
+        //线条宽度
+        ctx.lineWidth = 10
+        //线条颜色
+        ctx.strokeStyle = '#09f'
+        //填充颜色
+        ctx.fillStyle = '#fff'
+        // 绘制路径
+        //ctx.stroke()
+        //绘制形状
+        ctx.fill()
+    </script>
+</body>
+</html>

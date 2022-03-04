@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas width="500" height="500" style="background-color: #000;"></canvas>
+    <script>
+        let canvas = document.querySelector('canvas')
+        //获取2d渲染的上下文
+        let ctx = canvas.getContext('2d')
+        ctx.font="bold 30px Arial"
+        ctx.textAlign = "center" //竖轴对齐方式 - left/center/right
+        ctx.textBaseline ="middle" //横轴对齐方式 - top/middle/bottom
+
+        
+        ctx.fillStyle="#fff"
+        // text	规定在画布上输出的文本。
+        // x	开始绘制文本的 x 坐标位置（相对于画布）。
+        // y	开始绘制文本的 y 坐标位置（相对于画布）。
+        // maxWidth	可选。允许的最大文本宽度，以像素计。
+        ctx.fillText('文字展示区域', 200, 80) //填充文字
+        // ctx.strokeText('文字', 40,80)//描边文字
+
+
+    </script>
+</body>
+</html>

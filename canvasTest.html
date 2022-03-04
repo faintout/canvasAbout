@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写板</title>
+    <style>
+        #canvasId {
+            border: 1px solid #000;
+        }
+
+        .canvas-box {
+            width: 500px;
+            height: 600px;
+            margin: 0 auto;
+        }
+
+        .tool-box {
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+        }
+        .tool-box>div{
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body id="body">
+    <div class="canvas-box">
+        <canvas id="canvasId" width="500" height="500"></canvas>
+        <div class="tool-box">
+            <!-- 笔画颜色 -->
+            <div class="stroke-color">
+                笔画颜色 : 
+                <select onchange="changeStrokeColor()" id="strokeColorId">
+                    <option value="black" selected="selected">black</option>
+                    <option value="blue">blue</option>
+                    <option value="red">red</option>
+                    <option value="green">green</option>
+                    <option value="yellow">yellow</option>
+                    <option value="gray">gray</option>
+                </select>
+            </div>
+            <!-- 笔画宽度 -->
+            <div class="stroke-width">
+                笔画宽度 : <select  onchange="changeStrokeWidth()" id="strokeWidthId">
+                    <option value="1">1</option>
+                    <option value="3">3</option>
+                    <option value="5" selected="selected">5</option>
+                    <option value="7">7</option>
+                    <option value="9">9</option>
+                    <option value="11">11</option>
+                </select> 
+            </div>
+            <!-- 清空画板 -->
+            <div class="clear-canvas">
+                <button onclick="clearCanvasArea()">清空画板(清空图片)</button>
+            </div>
+            <!-- 创建图片 -->
+            <div class="create-img">
+                <button onclick="createCanvasImg()">生成图片</button>
+            </div>
+        </div>
+        <div id="saveImg"></div>
+    </div>
+    <script>
+        var canvas = canvasId
+        var ctx = canvas.getContext('2d')
+        let lastX, lastY,
+        //笔画颜色
+        strokeColor,
+        //笔画宽度
+        strokeWidth
+        //设置笔画颜色
+        function changeStrokeColor() {
+            strokeColor = strokeColorId[strokeColorId.selectedIndex].value
+        }
+        //设置笔画宽度
+        function changeStrokeWidth() {
+            strokeWidth = strokeWidthId[strokeWidthId.selectedIndex].value
+        }
+        //清除画布区域
+        function clearCanvasArea() {
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            //清空已生成图片
+            saveImg.innerHTML = ""
+        }
+        //生成画布图片
+        function createCanvasImg() {
+            var image = canvas.toDataURL("image/png");
+            var ctximg = document.createElement("span");
+            ctximg.innerHTML = "<img src='" + image + "' alt='from canvas'/>";
+            if (saveImg.getElementsByTagName('span').length >= 1) {
+                var span_old = saveImg.getElementsByTagName("span")[0];
+                saveImg.replaceChild(ctximg, span_old)
+            } else {
+                saveImg.appendChild(ctximg);
+            }
+        }
+        //在canvas上作画
+        function drawCanvas(x, y) {
+            ctx.beginPath();
+            ctx.strokeStyle = strokeColor;
+            ctx.lineWidth = strokeWidth;
+            ctx.lineJoin = "round";
+            lastX && lastY && ctx.moveTo(lastX, lastY);
+            ctx.lineTo(x, y);
+            ctx.closePath();
+            ctx.stroke();
+            lastX = x
+            lastY = y
+        }
+        //添加canvas画布属性
+        // PC方式:
+        canvas.onmousedown = function(downE) {
+            //鼠标移动
+            canvas.onmousemove = function(moveE) {
+                //鼠标移动参数
+                //计算鼠标在画布内的点位
+                let canvasX = moveE.clientX - canvas.offsetLeft
+                let canvasY = moveE.clientY - canvas.offsetTop
+                //超出画布预警
+                drawCanvas(canvasX,canvasY)
+            }
+        }
+        canvas.onmouseup = function() {
+            //清空移动事件，及笔触关联
+            claerStrokeEvent()
+        }
+        // 清空移动事件，及笔触关联
+        function claerStrokeEvent() {
+            canvas.onmousemove = null
+            lastX = null
+            lastY = null
+        }
+
+
+
+
+
+
+        //触屏方式：
+        canvas.addEventListener('touchstart', function (e) {
+            var ev = e || window.event;
+            var touch = ev.targetTouches[0];
+
+            canvas.addEventListener('touchmove', touchMoveEvent, false)
+
+        });
+        //阻止默认事件
+        function touchMoveEvent(e) {
+            e.preventDefault();
+            var touch = e.targetTouches[0];
+            let canvasX = touch.clientX - canvas.offsetLeft
+            let canvasY = touch.clientY - canvas.offsetTop
+            drawCanvas(canvasX,canvasY)
+        }
+        canvas.addEventListener('touchend', function () {
+            claerStrokeEvent()
+        });
+        //待完成-鼠标超出canvas画布内容去除移动事件
+    </script>
+</body>
+
+</html>
